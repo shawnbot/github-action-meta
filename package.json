@@ -1,6 +1,6 @@
 {
   "name": "github-action-meta",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Easily access event metadata in a GitHub Actions environment",
   "author": "GitHub, Inc.",
   "license": "MIT",
