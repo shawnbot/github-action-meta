@@ -1,13 +1,12 @@
 const meta = require('..')
-const env = require('../env')
+const mockedEnv = require('mocked-env')
 
-jest.mock('../env')
-
-function mockEnv(vars) {
-  env.mockImplementation(key => vars[key])
+let resetEnv = () => {}
+const mockEnv = env => {
+  resetEnv = mockedEnv(env)
 }
 
-afterEach(() => env.mockReset())
+beforeEach(() => resetEnv())
 
 describe('default export', () => {
   it('uses $GITHUB_ACTION for .action', () => {
@@ -60,7 +59,13 @@ describe('default export', () => {
       })
 
       it('returns undefined if $GITHUB_REF is not set', () => {
+        mockEnv({GITHUB_REF: undefined})
         expect(meta.git.branch).toEqual(undefined)
+      })
+
+      it('returns the ref if $GITHUB_REF does not start with "refs/heads/"', () => {
+        mockEnv({GITHUB_REF: 'lol/wut'})
+        expect(meta.git.branch).toEqual('lol/wut')
       })
     })
   })
@@ -86,10 +91,12 @@ describe('default export', () => {
     })
 
     it('does not set .owner without $GITHUB_REPOSITORY', () => {
+      mockEnv({GITHUB_REPOSITORY: undefined})
       expect(meta.repo.owner).toEqual(undefined)
     })
 
     it('does not set .name without $GITHUB_REPOSITORY', () => {
+      mockEnv({GITHUB_REPOSITORY: undefined})
       expect(meta.repo.name).toEqual(undefined)
     })
 
