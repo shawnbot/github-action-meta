@@ -45,5 +45,5 @@ function getBranch(ref) {
   const branchPrefix = 'refs/heads/'
   return ref && ref.startsWith(branchPrefix)
     ? ref.substr(branchPrefix.length)
-    : undefined
+    : ref
 }
