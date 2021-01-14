@@ -1,14 +1,14 @@
-const env = require('./env')
+const {env} = process
 
 module.exports = {
-  get action() { return env('GITHUB_ACTION') },
+  get action() { return env.GITHUB_ACTION },
 
-  get actor() { return env('GITHUB_ACTOR') },
+  get actor() { return env.GITHUB_ACTOR },
 
   get event() {
-    const path = env('GITHUB_EVENT_PATH')
+    const path = env.GITHUB_EVENT_PATH
     return Object.freeze({
-      name: env('GITHUB_EVENT_NAME'),
+      name: env.GITHUB_EVENT_NAME,
       path,
       get data() {
         return require(path)
@@ -17,28 +17,34 @@ module.exports = {
   },
 
   get git() {
-    const ref = env('GITHUB_REF')
+    const ref = env.GITHUB_REF
     return Object.freeze({
-      branch: getBranch(ref),
       ref,
-      sha: env('GITHUB_SHA')
+      sha: env.GITHUB_SHA,
+      branch: getBranch(ref)
     })
   },
 
   get repo() {
-    const slug = env('GITHUB_REPOSITORY')
+    const slug = env.GITHUB_REPOSITORY
     const [owner, name] = slug ? slug.split('/') : []
     return Object.freeze({
       slug,
       owner,
       name,
-      toString() { return slug }
+      toString() {
+        return slug
+      }
     })
   },
 
-  get workflow() { return env('GITHUB_WORKFLOW') },
+  get workflow() {
+    return env.GITHUB_WORKFLOW
+  },
 
-  get workspace() { return env('GITHUB_WORKSPACE') }
+  get workspace() {
+    return env.GITHUB_WORKSPACE
+  }
 }
 
 function getBranch(ref) {

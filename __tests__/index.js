@@ -1,13 +1,12 @@
 const meta = require('..')
-const env = require('../env')
+const mockedEnv = require('mocked-env')
 
-jest.mock('../env')
-
-function mockEnv(vars) {
-  env.mockImplementation(key => vars[key])
+let resetEnv = () => {}
+const mockEnv = env => {
+  resetEnv = mockedEnv(env)
 }
 
-afterEach(() => env.mockReset())
+beforeEach(() => resetEnv())
 
 describe('default export', () => {
   it('uses $GITHUB_ACTION for .action', () => {
@@ -61,6 +60,11 @@ describe('default export', () => {
 
       it('returns undefined if $GITHUB_REF is not set', () => {
         expect(meta.git.branch).toEqual(undefined)
+      })
+
+      it('returns the ref if $GITHUB_REF does not start with "refs/heads/"', () => {
+        mockEnv({GITHUB_REF: 'lol/wut'})
+        expect(meta.git.branch).toEqual('lol/wut')
       })
     })
   })
