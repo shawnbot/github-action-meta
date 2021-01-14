@@ -2,7 +2,8 @@
   "name": "github-action-meta",
   "version": "0.1.2",
   "description": "Easily access event metadata in a GitHub Actions environment",
-  "author": "GitHub, Inc.",
+  "repository": "shawnbot/github-action-meta",
+  "author": "Shawn Allen",
   "license": "MIT",
   "keywords": [
     "github-actions"
@@ -19,6 +20,7 @@
     "yargs": "^12.0.5"
   },
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "mocked-env": "^1.3.2"
   }
 }
