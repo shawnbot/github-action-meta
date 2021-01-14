@@ -59,6 +59,7 @@ describe('default export', () => {
       })
 
       it('returns undefined if $GITHUB_REF is not set', () => {
+        mockEnv({GITHUB_REF: undefined})
         expect(meta.git.branch).toEqual(undefined)
       })
 
@@ -90,10 +91,12 @@ describe('default export', () => {
     })
 
     it('does not set .owner without $GITHUB_REPOSITORY', () => {
+      mockEnv({GITHUB_REPOSITORY: undefined})
       expect(meta.repo.owner).toEqual(undefined)
     })
 
     it('does not set .name without $GITHUB_REPOSITORY', () => {
+      mockEnv({GITHUB_REPOSITORY: undefined})
       expect(meta.repo.name).toEqual(undefined)
     })
 
